@@ -116,17 +116,19 @@ import { AtpAgent } from "@atproto/api";
 			const description = <HTMLInputElement>document.getElementById("description");
 
 			const response = await fetch(avatar.value);
+
+			const contentType = response.headers.get("content-type") || "";
 			const iconImageBlob: Blob = await response.blob();
 			const arrayBuffer: ArrayBuffer = await iconImageBlob.arrayBuffer();
 			const iconImage: Uint8Array = new Uint8Array(arrayBuffer);
 
 			const uploadIconResp = await agent.api.com.atproto.blob.upload(iconImage, {
-				encoding: "image/png", // PNGの場合は "image/jpeg" にする
+				encoding: contentType,
 			});
 			const createProfileResp = await agent.api.app.bsky.actor.updateProfile({
 				displayName: displayName.value,
 				description: description.value,
-				avatar: { cid: uploadIconResp.data.cid, mimeType: "image/png" },  // PNGの場合は "image/jpeg" にする
+				avatar: { cid: uploadIconResp.data.cid, mimeType: contentType },
 				banner: null
 			});
 			console.log(createProfileResp);

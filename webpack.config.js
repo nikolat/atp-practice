@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 	mode: 'production',
 	entry: './src/main.ts',
@@ -13,5 +15,8 @@ module.exports = {
 	  extensions: [
 		'.ts', '.js',
 	  ],
+	},
+	output: {
+		path: `${__dirname}/docs`,
 	},
 };
