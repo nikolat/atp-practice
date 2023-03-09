@@ -76,13 +76,20 @@ import { AtpAgent } from "@atproto/api";
 			const prof = await agent.api.app.bsky.actor.getProfile({actor: actor});
 			const avatardt = <HTMLElement>document.getElementById("avatar-dt");
 			avatardt.innerHTML = "";
-			const img = <HTMLImageElement>document.createElement("img");
-			img.setAttribute("src", prof.data.avatar || "");
-			img.setAttribute("width", "50");
-			img.setAttribute("height", "50");
-			avatardt.appendChild(img);
+			const bannerdt = <HTMLElement>document.getElementById("banner-dt");
+			bannerdt.innerHTML = "";
+			const imgAvatar = <HTMLImageElement>document.createElement("img");
+			imgAvatar.setAttribute("src", prof.data.avatar || "");
+			imgAvatar.setAttribute("width", "50");
+			avatardt.appendChild(imgAvatar);
+			const imgBanner = <HTMLImageElement>document.createElement("img");
+			imgBanner.setAttribute("src", prof.data.banner || "");
+			imgBanner.setAttribute("width", "600");
+			bannerdt.appendChild(imgBanner);
 			const avatar = <HTMLInputElement>document.getElementById("avatar");
 			avatar.value = prof.data.avatar || "";
+			const banner = <HTMLInputElement>document.getElementById("banner");
+			banner.value = prof.data.banner || "";
 			const displayName = <HTMLInputElement>document.getElementById("displayname");
 			displayName.value = prof.data.displayName || "";
 			const description = <HTMLInputElement>document.getElementById("description");
@@ -125,24 +132,33 @@ import { AtpAgent } from "@atproto/api";
 				password: passwordInput.value,
 			});
 			const avatar = <HTMLInputElement>document.getElementById("avatar");
+			const banner = <HTMLInputElement>document.getElementById("banner");
 			const displayName = <HTMLInputElement>document.getElementById("displayname");
 			const description = <HTMLInputElement>document.getElementById("description");
 
-			const response = await fetch(avatar.value);
-
-			const contentType = response.headers.get("content-type") || "";
-			const iconImageBlob: Blob = await response.blob();
-			const arrayBuffer: ArrayBuffer = await iconImageBlob.arrayBuffer();
-			const iconImage: Uint8Array = new Uint8Array(arrayBuffer);
-
-			const uploadIconResp = await agent.api.com.atproto.blob.upload(iconImage, {
-				encoding: contentType,
+			const responseAvatar = await fetch(avatar.value);
+			const contentTypeAvatar = responseAvatar.headers.get("content-type") || "";
+			const avatarImageBlob: Blob = await responseAvatar.blob();
+			const arrayBufferAvatar: ArrayBuffer = await avatarImageBlob.arrayBuffer();
+			const avatarImage: Uint8Array = new Uint8Array(arrayBufferAvatar);
+			const uploadIconResp = await agent.api.com.atproto.blob.upload(
+				avatarImage, {
+				encoding: contentTypeAvatar,
+			});
+			const responseBanner = await fetch(banner.value);
+			const contentTypeBanner = responseBanner.headers.get("content-type") || "";
+			const bannerImageBlob: Blob = await responseBanner.blob();
+			const arrayBufferBanner: ArrayBuffer = await bannerImageBlob.arrayBuffer();
+			const bannerImage: Uint8Array = new Uint8Array(arrayBufferBanner);
+			const uploadBannerResp = await agent.api.com.atproto.blob.upload(
+				bannerImage, {
+				encoding: contentTypeBanner
 			});
 			const createProfileResp = await agent.api.app.bsky.actor.updateProfile({
 				displayName: displayName.value,
 				description: description.value,
-				avatar: { cid: uploadIconResp.data.cid, mimeType: contentType },
-				banner: null
+				avatar: { cid: uploadIconResp.data.cid, mimeType: contentTypeAvatar },
+				banner: { cid: uploadBannerResp.data.cid, mimeType: contentTypeBanner }
 			});
 			console.log(createProfileResp);
 		};
