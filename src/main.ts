@@ -6,17 +6,19 @@ import { AtpAgent } from "@atproto/api";
 	const getProfileButton = <HTMLButtonElement>document.getElementById("getprofile");
 	const setProfileButton = <HTMLButtonElement>document.getElementById("setprofile");
 	getTLButton.addEventListener("click", () => {
-		(<HTMLElement>document.getElementById("log")).textContent = "取得中・・・";
+		(<HTMLElement>document.getElementById("log")).textContent = "";
 		(<HTMLElement>document.getElementById("error")).textContent = "";
+		const serviceInput = <HTMLInputElement>document.getElementById("service");
 		const emailInput = <HTMLInputElement>document.getElementById("email");
 		const passwordInput = <HTMLInputElement>document.getElementById("password");
-		if (!emailInput.value || !passwordInput.value){
+		if (!serviceInput.value || !emailInput.value || !passwordInput.value){
 			return;
 		}
+		(<HTMLElement>document.getElementById("log")).textContent = "取得中・・・";
 		getTLButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: "https://bsky.social",
+				service: serviceInput.value,
 			});
 	
 			await agent.login({
@@ -51,18 +53,20 @@ import { AtpAgent } from "@atproto/api";
 			});
 	});
 	getProfileButton.addEventListener("click", () => {
-		(<HTMLElement>document.getElementById("log")).textContent = "取得中・・・";
+		(<HTMLElement>document.getElementById("log")).textContent = "";
 		(<HTMLElement>document.getElementById("error")).textContent = "";
+		const serviceInput = <HTMLInputElement>document.getElementById("service");
 		const emailInput = <HTMLInputElement>document.getElementById("email");
 		const passwordInput = <HTMLInputElement>document.getElementById("password");
 		const account = <HTMLInputElement>document.getElementById("account");
-		if (!emailInput.value || !passwordInput.value || !account.value){
+		if (!serviceInput.value || !emailInput.value || !passwordInput.value || !account.value){
 			return;
 		}
+		(<HTMLElement>document.getElementById("log")).textContent = "取得中・・・";
 		getProfileButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: "https://bsky.social",
+				service: serviceInput.value,
 			});
 			const actor = account.value + '.bsky.social';
 			await agent.login({
@@ -100,18 +104,20 @@ import { AtpAgent } from "@atproto/api";
 			});
 	});
 	setProfileButton.addEventListener("click", () => {
-		(<HTMLElement>document.getElementById("log")).textContent = "設定中・・・";
+		(<HTMLElement>document.getElementById("log")).textContent = "";
 		(<HTMLElement>document.getElementById("error")).textContent = "";
+		const serviceInput = <HTMLInputElement>document.getElementById("service");
 		const emailInput = <HTMLInputElement>document.getElementById("email");
 		const passwordInput = <HTMLInputElement>document.getElementById("password");
 		const account = <HTMLInputElement>document.getElementById("account");
-		if (!emailInput.value || !passwordInput.value || !account.value){
+		if (!serviceInput.value || !emailInput.value || !passwordInput.value || !account.value){
 			return;
 		}
+		(<HTMLElement>document.getElementById("log")).textContent = "設定中・・・";
 		setProfileButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: "https://bsky.social",
+				service: serviceInput.value,
 			});
 			const actor = account.value + '.bsky.social';
 			await agent.login({

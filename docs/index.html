@@ -5,37 +5,49 @@
 		<meta name="viewport" content="width=device-width">
 		<title>ATP-Practice</title>
 		<script src="main.js" defer></script>
+		<style>
+#log {
+	color: green;
+}
+#error {
+	color: red;
+}
+		</style>
 	</head>
 	<body>
 		<h1>ATP-Practice</h1>
 		<p><a href="https://gist.github.com/jiftechnify/1a6cfb1b3c1062b65978713010c5422a">こちら</a>を使ってみる練習</p>
 		<fieldset>
 			<legend>ログイン情報入力</legend>
-			<label for="email">Email</label>
-			<input type="email" id="email" name="email">
-			<label for="password">password</label>
-			<input type="password" id="password" name="password">
+			<dl>
+				<dt><label for="service">service</label></dt>
+				<dd><input type="text" id="service" name="service" value="https://bsky.social"></dd>
+				<dt><label for="email">Email or ID</label></dt>
+				<dd><input type="text" id="email" name="email"></dd>
+				<dt><label for="password">password</label></dt>
+				<dd><input type="password" id="password" name="password"></dd>
+			</dl>
 		</fieldset>
 		<fieldset>
 			<legend>プロフィール</legend>
-			<label for="account">アカウント</label>
-			<input type="text" id="account" name="account" placeholder="your account id">
-			<label for="getprofile">プロフィール取得</label>
-			<input type="button" id="getprofile" name="getprofile" value="取得">
-			<div id="profile">
-				<dl>
-					<dt id="avatar-dt">avatar</dt>
-					<dd><input id="avatar" type="text" size="100">※PNG/JPEGのみ指定可能</dd>
-					<dt>displayName</dt>
-					<dd><input id="displayname" type="text"></dd>
-					<dt>description</dt>
-					<dd><textarea id="description" rows="3" cols="50"></textarea></dd>
-				</dl>
-			</div>
-			<label for="setprofile">プロフィール送信</label>
-			<input type="button" id="setprofile" name="setprofile" value="送信">
-			<p id="log" style="color: green;"></p>
-			<p id="error" style="color: red;"></p>
+			<dl>
+				<dt><label for="account">アカウント</label></dt>
+				<dd><input type="text" id="account" name="account" placeholder="your account id"></dd>
+				<dt><label for="getprofile">プロフィール取得</label></dt>
+				<dd><input type="button" id="getprofile" name="getprofile" value="取得"></dd>
+			</dl>
+			<dl>
+				<dt id="avatar-dt">avatar</dt>
+				<dd><input id="avatar" type="text" size="40">※PNG/JPEGのみ指定可能</dd>
+				<dt>displayName</dt>
+				<dd><input id="displayname" type="text"></dd>
+				<dt>description</dt>
+				<dd><textarea id="description" rows="3" cols="40"></textarea></dd>
+				<dt><label for="setprofile">プロフィール送信</label></dt>
+				<dd><input type="button" id="setprofile" name="setprofile" value="送信"></dd>
+			</dl>
+			<p id="log"></p>
+			<p id="error"></p>
 		</fieldset>
 		<fieldset>
 			<legend>timeline取得</legend>
