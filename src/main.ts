@@ -2,6 +2,14 @@
 import { AtpAgent } from "@atproto/api";
 
 (() => {
+	const dtformat = new Intl.DateTimeFormat('ja-jp', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit'
+	});
 	const getTLButton = <HTMLButtonElement>document.getElementById("gettl");
 	const getProfileButton = <HTMLButtonElement>document.getElementById("getprofile");
 	const setProfileButton = <HTMLButtonElement>document.getElementById("setprofile");
@@ -18,7 +26,7 @@ import { AtpAgent } from "@atproto/api";
 		getTLButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: serviceInput.value,
+				service: "https://" + serviceInput.value,
 			});
 	
 			await agent.login({
@@ -32,7 +40,7 @@ import { AtpAgent } from "@atproto/api";
 			for (const p of tl.data.feed) {
 				console.log(p);
 				const dt = <HTMLElement>document.createElement("dt");
-				dt.textContent = p.post.author.displayName + ' ' + p.post.author.handle;
+				dt.textContent = p.post.author.displayName + " " + p.post.author.handle + " " + dtformat.format(new Date(p.post.indexedAt));
 				const img = document.createElement("img");
 				img.setAttribute("src", p.post.author.avatar || "");
 				img.setAttribute("width", "50");
@@ -42,7 +50,7 @@ import { AtpAgent } from "@atproto/api";
 				const p1 = document.createElement("p");
 				p1.textContent = (p.post.record as any).text;
 				const p2 = document.createElement("p");
-				p2.textContent = "🔁" + p.post.repostCount + " ♥" + p.post.upvoteCount;
+				p2.textContent = "☜" + p.post.replyCount + " 🔁" + p.post.repostCount + " ❤" + p.post.upvoteCount;
 				dd.appendChild(p1);
 				dd.appendChild(p2);
 				dl.appendChild(dt);
@@ -77,9 +85,9 @@ import { AtpAgent } from "@atproto/api";
 		getProfileButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: serviceInput.value,
+				service: "https://" + serviceInput.value,
 			});
-			const actor = account.value + '.bsky.social';
+			const actor = account.value + '.' + serviceInput.value;
 			await agent.login({
 				identifier: emailInput.value,
 				password: passwordInput.value,
@@ -135,9 +143,9 @@ import { AtpAgent } from "@atproto/api";
 		setProfileButton.disabled = true;
 		const main = async () => {
 			const agent = new AtpAgent({
-				service: serviceInput.value,
+				service: "https://" + serviceInput.value,
 			});
-			const actor = account.value + '.bsky.social';
+			const actor = account.value + '.' + serviceInput.value;
 			await agent.login({
 				identifier: emailInput.value,
 				password: passwordInput.value,
