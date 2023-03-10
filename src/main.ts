@@ -28,12 +28,10 @@ import { AtpAgent } from "@atproto/api";
 			const agent = new AtpAgent({
 				service: "https://" + serviceInput.value,
 			});
-	
 			await agent.login({
 				identifier: emailInput.value,
 				password: passwordInput.value,
 			});
-	
 			const dl = <HTMLElement>document.getElementById("tl");
 			dl.innerHTML = "";
 			const tl = await agent.api.app.bsky.feed.getTimeline({});
@@ -41,11 +39,13 @@ import { AtpAgent } from "@atproto/api";
 				console.log(p);
 				const dt = <HTMLElement>document.createElement("dt");
 				dt.textContent = p.post.author.displayName + " " + p.post.author.handle + " " + dtformat.format(new Date(p.post.indexedAt));
-				const img = document.createElement("img");
-				img.setAttribute("src", p.post.author.avatar || "");
-				img.setAttribute("width", "50");
-				img.setAttribute("height", "50");
-				dt.prepend(img);
+				if (p.post.author.avatar) {
+					const img = document.createElement("img");
+					img.setAttribute("src", p.post.author.avatar);
+					img.setAttribute("width", "50");
+					img.setAttribute("height", "50");
+					dt.prepend(img);
+				}
 				const dd = <HTMLElement>document.createElement("dd");
 				const p1 = document.createElement("p");
 				p1.textContent = (p.post.record as any).text;
