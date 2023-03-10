@@ -27,13 +27,24 @@ import { AtpAgent } from "@atproto/api";
 			});
 	
 			const dl = <HTMLElement>document.getElementById("tl");
+			dl.innerHTML = "";
 			const tl = await agent.api.app.bsky.feed.getTimeline({});
 			for (const p of tl.data.feed) {
 				console.log(p);
 				const dt = <HTMLElement>document.createElement("dt");
 				dt.textContent = p.post.author.displayName + ' ' + p.post.author.handle;
+				const img = document.createElement("img");
+				img.setAttribute("src", p.post.author.avatar || "");
+				img.setAttribute("width", "50");
+				img.setAttribute("height", "50");
+				dt.prepend(img);
 				const dd = <HTMLElement>document.createElement("dd");
-				dd.textContent = (p.post.record as any).text + " ↻" + p.post.repostCount + " ♥" + p.post.upvoteCount;
+				const p1 = document.createElement("p");
+				p1.textContent = (p.post.record as any).text;
+				const p2 = document.createElement("p");
+				p2.textContent = "🔁" + p.post.repostCount + " ♥" + p.post.upvoteCount;
+				dd.appendChild(p1);
+				dd.appendChild(p2);
 				dl.appendChild(dt);
 				dl.appendChild(dd);
 			}
@@ -84,7 +95,7 @@ import { AtpAgent } from "@atproto/api";
 			avatardt.appendChild(imgAvatar);
 			const imgBanner = <HTMLImageElement>document.createElement("img");
 			imgBanner.setAttribute("src", prof.data.banner || "");
-			imgBanner.setAttribute("width", "600");
+			imgBanner.setAttribute("width", "400");
 			bannerdt.appendChild(imgBanner);
 			const avatar = <HTMLInputElement>document.getElementById("avatar");
 			avatar.value = prof.data.avatar || "";
