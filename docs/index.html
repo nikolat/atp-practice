@@ -25,25 +25,50 @@
 			<legend>プロフィール</legend>
 			<dl>
 				<dt><label for="account">アカウント</label></dt>
-				<dd><input type="text" id="account" name="account" placeholder="your account id"></dd>
+				<dd><input type="text" id="account" name="account" placeholder="your account id"> (例: nikolat)</dd>
 				<dt><label for="getprofile">プロフィール取得</label></dt>
 				<dd><input type="button" id="getprofile" name="getprofile" value="取得"></dd>
 			</dl>
+			<p>※PNG/JPEGのみ指定可能、File選択未対応。File選択したい場合はこちら→<a href="https://mimonelu.github.io/klearsky/#/upload-profile-images-form">Klearsky</a></p>
+			<fieldset>
+				<legend>avatar</legend>
+				<p id="avatar-preview"></p>
+				<input type="radio" id="avatar-from-url" name="avatar-select-from" value="url" checked>
+				<label for="avatar-from-url">URL指定</label>
+				<input type="radio" id="avatar-from-file" name="avatar-select-from" value="file" disabled>
+				<label for="avatar-from-file">File選択</label>
+				<dl>
+					<dt><label for="avatar-url">URL指定</label></dt>
+					<dd><input id="avatar-url" name="avatar-url" type="text" size="40"></dd>
+					<dt><label for="avatar-file">File選択</label></dt>
+					<dd><input id="avatar-file" name="avatar-file" type="file" size="40" accept=".png, .jpg" disabled></dd>
+				</dl>
+			</fieldset>
+			<fieldset>
+				<legend>banner</legend>
+				<p id="banner-preview"></p>
+				<input type="radio" id="banner-from-url" name="banner-select-from" value="url" checked>
+				<label for="banner-from-url">URL指定</label>
+				<input type="radio" id="banner-from-file" name="banner-select-from" value="file" disabled>
+				<label for="banner-from-file">File選択</label>
+				<dl>
+					<dt><label for="banner-url">URL指定</label></dt>
+					<dd><input id="banner-url" name="banner-url" type="text" size="40"></dd>
+					<dt><label for="banner-file">File選択</label></dt>
+					<dd><input id="banner-file" name="banner-file" type="file" size="40" accept=".png, .jpg" disabled></dd>
+				</dl>
+			</fieldset>
 			<dl>
-				<dt id="avatar-dt">avatar</dt>
-				<dd><input id="avatar" type="text" size="40">※PNG/JPEGのみ指定可能</dd>
-				<dt id="banner-dt">banner</dt>
-				<dd><input id="banner" type="text" size="40">※PNG/JPEGのみ指定可能</dd>
-				<dt>displayName</dt>
+				<dt><label for="displayname">displayName</label></dt>
 				<dd><input id="displayname" type="text"></dd>
-				<dt>description</dt>
+				<dt><label for="description">description</label></dt>
 				<dd><textarea id="description" rows="3" cols="40"></textarea></dd>
 				<dt><label for="setprofile">プロフィール送信</label></dt>
 				<dd><input type="button" id="setprofile" name="setprofile" value="送信"></dd>
 			</dl>
-			<p id="log"></p>
-			<p id="error"></p>
 		</fieldset>
+		<p id="log"></p>
+		<p id="error"></p>
 		<fieldset>
 			<legend>timeline取得</legend>
 			<label for="gettl">TL取得</label>

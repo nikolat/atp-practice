@@ -93,22 +93,22 @@ import { AtpAgent } from "@atproto/api";
 				password: passwordInput.value,
 			});
 			const prof = await agent.api.app.bsky.actor.getProfile({actor: actor});
-			const avatardt = <HTMLElement>document.getElementById("avatar-dt");
-			avatardt.innerHTML = "";
-			const bannerdt = <HTMLElement>document.getElementById("banner-dt");
-			bannerdt.innerHTML = "";
+			const avatarPreview = <HTMLElement>document.getElementById("avatar-preview");
+			avatarPreview.innerHTML = "";
+			const bannerPreview = <HTMLElement>document.getElementById("banner-preview");
+			bannerPreview.innerHTML = "";
 			const imgAvatar = <HTMLImageElement>document.createElement("img");
 			imgAvatar.setAttribute("src", prof.data.avatar || "");
 			imgAvatar.setAttribute("width", "50");
-			avatardt.appendChild(imgAvatar);
+			avatarPreview.appendChild(imgAvatar);
 			const imgBanner = <HTMLImageElement>document.createElement("img");
 			imgBanner.setAttribute("src", prof.data.banner || "");
 			imgBanner.setAttribute("width", "400");
-			bannerdt.appendChild(imgBanner);
-			const avatar = <HTMLInputElement>document.getElementById("avatar");
-			avatar.value = prof.data.avatar || "";
-			const banner = <HTMLInputElement>document.getElementById("banner");
-			banner.value = prof.data.banner || "";
+			bannerPreview.appendChild(imgBanner);
+			const avatarURL = <HTMLInputElement>document.getElementById("avatar-url");
+			avatarURL.value = prof.data.avatar || "";
+			const bannerURL = <HTMLInputElement>document.getElementById("banner-url");
+			bannerURL.value = prof.data.banner || "";
 			const displayName = <HTMLInputElement>document.getElementById("displayname");
 			displayName.value = prof.data.displayName || "";
 			const description = <HTMLInputElement>document.getElementById("description");
@@ -150,29 +150,44 @@ import { AtpAgent } from "@atproto/api";
 				identifier: emailInput.value,
 				password: passwordInput.value,
 			});
-			const avatar = <HTMLInputElement>document.getElementById("avatar");
-			const banner = <HTMLInputElement>document.getElementById("banner");
+			const avatarURL = <HTMLInputElement>document.getElementById("avatar-url");
+			const bannerURL = <HTMLInputElement>document.getElementById("banner-url");
 			const displayName = <HTMLInputElement>document.getElementById("displayname");
 			const description = <HTMLInputElement>document.getElementById("description");
-
-			const responseAvatar = await fetch(avatar.value);
-			const contentTypeAvatar = responseAvatar.headers.get("content-type") || "";
-			const avatarImageBlob: Blob = await responseAvatar.blob();
-			const arrayBufferAvatar: ArrayBuffer = await avatarImageBlob.arrayBuffer();
-			const avatarImage: Uint8Array = new Uint8Array(arrayBufferAvatar);
-			const uploadIconResp = await agent.api.com.atproto.blob.upload(
-				avatarImage, {
-				encoding: contentTypeAvatar,
-			});
-			const responseBanner = await fetch(banner.value);
-			const contentTypeBanner = responseBanner.headers.get("content-type") || "";
-			const bannerImageBlob: Blob = await responseBanner.blob();
-			const arrayBufferBanner: ArrayBuffer = await bannerImageBlob.arrayBuffer();
-			const bannerImage: Uint8Array = new Uint8Array(arrayBufferBanner);
-			const uploadBannerResp = await agent.api.com.atproto.blob.upload(
-				bannerImage, {
-				encoding: contentTypeBanner
-			});
+			let contentTypeAvatar;
+			let uploadIconResp;
+			if ((<HTMLInputElement>document.getElementById("avatar-select-from")).checked) {
+				const responseAvatar = await fetch(avatarURL.value);
+				contentTypeAvatar = responseAvatar.headers.get("content-type") || "";
+				const avatarImageBlob: Blob = await responseAvatar.blob();
+				const arrayBufferAvatar: ArrayBuffer = await avatarImageBlob.arrayBuffer();
+				const avatarImage: Uint8Array = new Uint8Array(arrayBufferAvatar);
+				uploadIconResp = await agent.api.com.atproto.blob.upload(
+					avatarImage, {
+					encoding: contentTypeAvatar,
+				});
+			}
+			else {
+				//TODO
+				return;
+			}
+			let contentTypeBanner;
+			let uploadBannerResp;
+			if ((<HTMLInputElement>document.getElementById("banner-select-from")).checked) {
+				const responseBanner = await fetch(bannerURL.value);
+				contentTypeBanner = responseBanner.headers.get("content-type") || "";
+				const bannerImageBlob: Blob = await responseBanner.blob();
+				const arrayBufferBanner: ArrayBuffer = await bannerImageBlob.arrayBuffer();
+				const bannerImage: Uint8Array = new Uint8Array(arrayBufferBanner);
+				uploadBannerResp = await agent.api.com.atproto.blob.upload(
+					bannerImage, {
+					encoding: contentTypeBanner
+				});
+			}
+			else {
+				//TODO
+				return;
+			}
 			const createProfileResp = await agent.api.app.bsky.actor.updateProfile({
 				displayName: displayName.value,
 				description: description.value,
